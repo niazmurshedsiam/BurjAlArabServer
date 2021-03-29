@@ -42,17 +42,23 @@ client.connect((err) => {
           const tokenEmail = decodedToken.email;
           const queryEmail = req.query.email;
           console.log(tokenEmail,queryEmail);
-          if (tokenEmail == req.query.email) {
+          if (tokenEmail == queryEmail) {
             bookings
-              .find({ email: req.query.email })
+              .find({ email: queryEmail })
               .toArray((err, documents) => {
-                res.send(documents);
+                res.status(200).send(documents);
               });
+          }
+          else{
+            res.status(401).send('unauthorized access');
           }
         })
         .catch(function (error) {
-          // Handle error
+          res.status(401).send('unauthorized access');
         });
+    }
+    else{
+      res.status(401).send('unauthorized access');
     }
   });
 });
